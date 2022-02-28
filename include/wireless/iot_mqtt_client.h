@@ -5,12 +5,11 @@
 #include "PubSubClient.h"
 #include <WiFi.h>
 
-
-
+extern WiFiClient espClient;
+extern PubSubClient mqtt_client;
 
 void mqtt_init_client(void);
 void mqtt_callback(char* topic, byte* payload, unsigned int length);
 void mqtt_management(void);
-
 
 #endif

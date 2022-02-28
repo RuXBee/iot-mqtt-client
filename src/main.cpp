@@ -17,14 +17,18 @@ Preferences preferences;
 
 void setup() {
 	delay(100);
+    // wifiManager.erase(true);
+	// Logger.Info("Erase WiFi manager");
+
 	preferences.begin("credentials", false);
 	
-	connectToWiFi();
+	// connectToWiFi();
+	auto_wifi_manager();
 	delay(10);
 	mqtt_init_client();
 	configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
 	delay(2000);
-	Logger.Info("Start program");
+	Logger.Info("MQTT client initialize");
 
 }
 
