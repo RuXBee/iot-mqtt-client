@@ -2,9 +2,14 @@
 #ifndef CREDENTIALS_H
 #define CREDENTIALS_H
 
-// Wifi
-#define IOT_CONFIG_WIFI_SSID        "Ruben"
-#define IOT_CONFIG_WIFI_PASSWORD    "12345678"
+
+#define PATH_CONFIG_FILE "/config.json"
+
 #define HOSTNAME                    "IED-ESP32-DEVICE"
+#define DEFAULT_CLIENT              "IED"
+#define DEFAULT_DEVICE              "RUBEN-ESP32"
+
+
 
 #endif // CREDENTIALS_H
+    

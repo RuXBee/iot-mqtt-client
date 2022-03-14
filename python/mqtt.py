@@ -33,7 +33,7 @@ dic = {
     "temperature": 23,
     "humidity": 28
 }
-client.publish(topic="testtopic/ruben", payload=str(dic), retain=True)
+client.publish(topic="testtopic/ruben", payload="", retain=True)
 client.publish_callback
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.
