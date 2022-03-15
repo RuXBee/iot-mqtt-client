@@ -88,11 +88,11 @@ const char *mqtt_pass = "1234";                                 // MQTT Broker p
 const char *root_topic_subscribe = "broker/";                   // MQTT subscribe topic
 const char *root_topic_publish = "pub/";                        // MQTT publisher topic --> clientId/deviceId 
 
+const byte led_pin = 13;
 static WiFiClient espClient;
 PubSubClient mqtt_client(espClient);
 
 
-uint8_t subscriber_machine_state = MQTT_MACHINE_DEFAULT;
 
 void mqtt_callback(char *, byte *, unsigned int);
 
@@ -109,7 +109,7 @@ void mqtt_callback(char *topic, byte *payload, unsigned int length) {
     for (int i = 0; i < length; i++) {
         incoming += (char)payload[i];
     }
-
+    
     StaticJsonDocument<1024> doc;
     DeserializationError error = deserializeJson(doc,incoming);
     if (error) {
@@ -124,28 +124,13 @@ void mqtt_callback(char *topic, byte *payload, unsigned int length) {
 
     if (device != deviceId) {
 
-        subscriber_machine_state = MQTT_MACHINE_DEFAULT;
         String targetTopic = deviceId.c_str() + String("/") + clientId.c_str();
         Serial.println(reset);
-        if (reset) subscriber_machine_state = RESET_DEVICE;
-        else if (default_wifi) subscriber_machine_state = ERASE_WIFI;
-        else if (led_state==1 || led_state==0) subscriber_machine_state = SWITCH_LED;
 
-        switch (subscriber_machine_state) {
-
-            case ERASE_WIFI:
-                Logger.Info("Erase WiFi manager...");
-                wm.erase();
-                break;
-
-            case RESET_DEVICE:
-                Logger.Info("Software reset device...");
-                ESP.restart();
-                break;
-            
-            default:
-                break;
-        }
+        if (reset) ESP.restart();;
+        if (default_wifi) wm.erase();
+        // Write LED state
+        digitalWrite(led_pin, led_state);
     }
 }
 
@@ -177,24 +162,24 @@ void mqtt_management() {
 }
 
 
-void sendJsonMqtt(const char *payload) {
+void sendJsonMqtt(void) {
 
 
     static int temperature = 20;
     static int humidity = 50;
     StaticJsonDocument<1024> doc;
     
-    
+    // Simulate data
     if (++temperature > 40) temperature = 20;
     if (++humidity > 80) humidity = 30;
 
     String datetime = get_time_utc();
 
     char json[1024];
-    sprintf(json, "{\"datetime\": \"%s\", \"deviceId\": \"%s\", \"data:\": {\"temperature_grades\": %d, \"absolute_humidity\": %d} }", datetime.c_str(), deviceId.c_str(), temperature, humidity);
+    sprintf(json, "{\"datetime\": \"%s\", \"deviceId\": \"%s\", \"data\": {\"temperature_grades\": %d, \"absolute_humidity\": %d} }", datetime.c_str(), deviceId.c_str(), temperature, humidity);
 
-    String topic = clientId.c_str() + String("/") + deviceId.c_str();
-    // Logger.Info("SEND MESSAGE: " + String(json) +  " -- with topic: " + topic);
+    String topic = clientId.c_str() + String("/");
+    Logger.Info("SEND MESSAGE: " + String(json) +  " -- with topic: " + topic);
     mqtt_client.publish(topic.c_str(), json);
 }
 
