@@ -5,9 +5,9 @@
 
 #define PATH_CONFIG_FILE "/config.json"
 
-#define HOSTNAME                    "IED-ESP32-DEVICE"
-#define DEFAULT_CLIENT              "IED"
-#define DEFAULT_DEVICE              "RUBEN-ESP32"
+#define HOSTNAME                    "UPNA-ESP32-DEVICE"
+#define DEFAULT_CLIENT              "UPNA"
+#define DEFAULT_DEVICE              "UPNA-ESP32"
 
 
 

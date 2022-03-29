@@ -23,9 +23,9 @@ static Preferences preferences;                                 // R/W flash mem
 void readConfig() {
 
 	preferences.begin("Config", true);
-    // preferences.clear();
     clientId = preferences.getString("client", clientId);
     deviceId = preferences.getString("device", deviceId);
+    // preferences.clear();
     preferences.end();
 }
 
@@ -55,7 +55,7 @@ void updateConfigCallback() {
 }
 
 void auto_wifi_manager() {
-
+    
     wm.addParameter(&client_wifi);
     wm.addParameter(&device_wifi);
     // Handle changes
@@ -65,12 +65,13 @@ void auto_wifi_manager() {
     device_wifi.setValue(deviceId.c_str(), sizeof(deviceId));
 
     String name = deviceId + "__" + String(WiFi.macAddress());
-    
+    // wm.erase();
     if (!wm.autoConnect(name.c_str(), "12345678")) {
         Logger.Warning("Failed connect WiFi...");
         delay(5000);
         ESP.restart();
     }
+    WiFi.setHostname(deviceId.c_str());
 }
 
 

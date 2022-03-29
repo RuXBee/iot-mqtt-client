@@ -21,7 +21,6 @@ void loop() {
 	if (millis() > (last + 2000)) {
 		last = millis();
 		mqtt_management();
-	    const char *payload = "{\"deviceId\": \"ESP32\"}";
-		sendJsonMqtt(payload);
+		sendJsonMqtt();
 	}
 }
