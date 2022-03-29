@@ -1,0 +1,26 @@
+// Client to borker
+{
+    "datetime": "2022-2-14T11:6:44Z",
+    "deviceId": "ESP32_RUBEN",
+    "data": {
+        "temperature_grades": 23.5,
+        "absolute_humidity": 50
+    }
+},
+// Broker to client
+{
+    "deviceId": "BROKER_MASTER",
+    "data": {
+        "led_state": false,
+        "reset": true,
+        "default_wifi": false
+    }
+}
+
+{"datetime": 2022-2-14T11:48:18Z, 
+"deviceId": RUBEN,
+ "data:": {
+    "temperature_grades": 20,
+    "absolute_humidity": 50}
+
+}
